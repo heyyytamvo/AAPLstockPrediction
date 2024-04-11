@@ -10,7 +10,7 @@ class Predictor:
     def __init__(self) -> None:
         self.__model__ = tf.keras.models.load_model("LSTM15.h5")
         self.__datasetScaler__ = joblib.load("scaler.save")
-        self.__closeScaler__ = joblib.load("closePriceScaler")
+        self.__closeScaler__ = joblib.load("closePriceScaler.save")
         
     def inverser(self, closedata):
         '''closedata: an np.array'''
