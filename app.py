@@ -1,5 +1,5 @@
-import dataLoader
-import Predictor
+from dataLoader import dataLoader
+from Predictor import Predictor
 
 _dataLoader = dataLoader()
 _predictor = Predictor()
