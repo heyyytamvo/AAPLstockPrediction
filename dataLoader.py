@@ -43,14 +43,3 @@ class dataLoader:
     
     def getScaledCloseData(self):
         return self.__closeScale__
-        
-    
-    
-test = dataLoader()
-
-print(test.__stockDataFrame__)
-print()
-print(test.__scaledStockDataFrame__)
-# print(joblib.__version__)
-# testScaler = joblib.load("scaler.save")
-# print(type(testScaler))
