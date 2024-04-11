@@ -5,6 +5,7 @@ import yfinance as yf
 import datetime as dt
 import joblib
 import sklearn
+import os
 
 class dataLoader:
     __ticker__ = None
@@ -27,6 +28,7 @@ class dataLoader:
         self.__scaledStockDataFrame__ = self.scaleEntireDataset(self.__stockDataFrame__)
         self.__closeOriginal__ = self.__stockDataFrame__["Close"].values
         self.__closeScale__ = self.__scaledStockDataFrame__["Close"].values
+        self.writeData()
         
         
         
@@ -43,3 +45,23 @@ class dataLoader:
     
     def getScaledCloseData(self):
         return self.__closeScale__
+    
+    def writeData(self):
+        fileName = "History.txt"
+        # Check if the file exists
+        if not os.path.exists(fileName):
+            # Get real Stock Data
+            realStock = self.__stockDataFrame__.copy()
+            # Drop some column
+            realStock.drop(columns="Open", inplace=True)
+            realStock.drop(columns="High", inplace=True)
+            realStock.drop(columns="Low", inplace=True)
+            realStock.drop(columns="Adj Close", inplace=True)
+            realStock.drop(columns="Volume", inplace=True)
+            
+            # Rename close
+            realStock = realStock.rename(columns={"Close": "Actual Close Price"})
+            
+            realStock["Predicted Close Price"] = np.nan
+            realStock.to_csv(fileName, sep=',', index=True)
+        
