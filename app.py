@@ -4,6 +4,5 @@ from Predictor import Predictor
 _dataLoader = dataLoader()
 _predictor = Predictor()
 
-data = _dataLoader.getScaledCloseData()
-predictResult = _predictor.predict(data)
-print(predictResult)
+x_data = _dataLoader.getScaledCloseData()
+_predictor.predict(x_data)

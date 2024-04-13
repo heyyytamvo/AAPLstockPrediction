@@ -18,7 +18,7 @@ class dataLoader:
     __closeScale__ = None
     
     
-    def __init__(self, _ticker=parameters.TICKER, _startDay = parameters.START_DATE, _endDate = parameters.END_DATE, _lookUpDays = parameters.LOOK_UP_DAYS):
+    def __init__(self, _ticker=parameters.TICKER, _startDay = parameters.START_DATE, _endDate = parameters.currentDate, _lookUpDays = parameters.LOOK_UP_DAYS):
         self.__ticker__ = _ticker
         self.__startDate__ = _startDay
         self.__endDate__ = _endDate
@@ -64,4 +64,22 @@ class dataLoader:
             
             realStock["Predicted Close Price"] = np.nan
             realStock.to_csv(fileName, sep=',', index=True)
-        
+        else:
+            ## Update actual close price
+            ### Read the existing file
+            with open(fileName, 'r') as file:
+                lines = file.readlines()
+
+            ### Modify the second column in the last record
+            last_record = lines[-1].split(',')
+            last_record[1] = str(self.__stockDataFrame__.tail(1)["Close"].values[0])
+
+            ### Construct the modified last record string
+            modified_last_record = ','.join(last_record)
+
+            ### Replace the last record in the lines list
+            lines[-1] = modified_last_record
+
+            ### Write the modified lines back to the file
+            with open(fileName, 'w') as file:
+                file.writelines(lines)
