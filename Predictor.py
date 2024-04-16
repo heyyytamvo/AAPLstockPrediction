@@ -70,3 +70,5 @@ class Predictor:
         # Reverse to original values
         result = self.inverser(result)
         self.writeResult(result[0][0])
+        
+        return result[0][0]
