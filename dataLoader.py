@@ -48,6 +48,8 @@ class dataLoader:
     
     def writeData(self):
         fileName = "History.txt"
+        '''DEBUG'''
+        print("Call writeData at dataLoader.py")
         # Check if the file exists
         if not os.path.exists(fileName):
             # Get real Stock Data
@@ -64,7 +66,9 @@ class dataLoader:
             
             realStock["Predicted Close Price"] = np.nan
             realStock.to_csv(fileName, sep=',', index=True)
+            print("At dataLoader.py, first History.txt created")
         else:
+            print("At dataLoader.py, History.txt modified")
             ## Update actual close price
             ### Read the existing file
             with open(fileName, 'r') as file:

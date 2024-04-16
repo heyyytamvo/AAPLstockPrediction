@@ -35,6 +35,9 @@ class Predictor:
         if (day_of_week == "Saturday") or (day_of_week == "Sunday"):
             pass
         else:
+            '''DEBUG'''
+            print("Call writeResult at Predictor.py")
+            '''DEBUG'''
             fileName = "History.txt"
             currentDate = parameters.currentDate
             ## Open History.txt and write new data
@@ -62,6 +65,9 @@ class Predictor:
             
     def predict(self, _xData):
         # reshape _xData
+        '''DEBUG'''
+        print("Predictor.py call predict")
+        '''DEBUG'''
         xdata = np.reshape(_xData, (1, _xData.shape[0], 1))
         
         # Performing Prediction
@@ -70,5 +76,3 @@ class Predictor:
         # Reverse to original values
         result = self.inverser(result)
         self.writeResult(result[0][0])
-        
-        return result[0][0]

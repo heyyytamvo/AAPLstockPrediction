@@ -64,3 +64,4 @@ Werkzeug==3.0.2
 wrapt==1.14.1
 yfinance==0.2.37
 zope.interface==6.2
+apscheduler==3.10.4
