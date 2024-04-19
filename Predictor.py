@@ -34,6 +34,9 @@ class Predictor:
         
         if (day_of_week == "Saturday") or (day_of_week == "Sunday"):
             pass
+        
+
+
         else:
             fileName = "History.txt"
             currentDate = parameters.currentDate
@@ -44,7 +47,14 @@ class Predictor:
             
             with open(fileName, 'r') as file:
                 lines = file.readlines()
+            
 
+            ### Modify the second column in the last record : Actual Price
+            last_record = lines[-1].split(',')
+
+            ## CaseHandle: when worker shutdown and re run
+            #if (last_record[1] == '-1'):
+            #x    return
             ## Modify the second column in the last record
             last_record = lines[-1].split(',')
             last_record[2] = str(predictedPrice)
@@ -72,3 +82,4 @@ class Predictor:
         self.writeResult(result[0][0])
         
         return result[0][0]
+
