@@ -5,6 +5,9 @@ import pandas as pd
 import parameters
 from apscheduler.schedulers.background import BackgroundScheduler
 import os
+import pytz
+import datetime as dt
+
 # Create a Flask app
 app = Flask(__name__)
 def ApplePrediction():
@@ -14,11 +17,17 @@ def ApplePrediction():
     
     x_data = _dataLoader.getScaledCloseData()
     _predictor.predict(x_data)
+
+    eastern = pytz.timezone('US/Eastern')
+    currentDateTime = dt.datetime.now(eastern)
+    parameters.currentDate = currentDateTime.strftime("%Y-%m-%d")
+    parameters.currentWeekDate = currentDateTime.strftime("%A")
+    parameters.currentHour = currentDateTime.strftime("%H:%M:%S")
     
 # Create a scheduler
-scheduler = BackgroundScheduler(timezone='est')
+scheduler = BackgroundScheduler(timezone='US/Eastern')
 # Add the scheduled job to the scheduler
-scheduler.add_job(ApplePrediction, 'cron', hour=9, minute=35)
+scheduler.add_job(ApplePrediction, 'cron', hour=9, minute=45)
 # Start the scheduler
 scheduler.start()
 
@@ -58,7 +67,7 @@ def Apple():
         data = {
             'Ticker': 'AAPL',
             'Timezone': 'Eastern Time (ET)',
-            'LastUpdate' : currentHour + ' ' + currentDate + ' EST',
+            'LastTimeUpdated' : currentHour + ' ' + currentDate + ' EST',
             'Predicted Close Price of Today' : float(df["Predicted Close Price"].values[-1]),
             'message' : 'success',
             'Github Repo' : 'https://github.com/heyyytamvo/AAPLstockPrediction'
@@ -68,7 +77,7 @@ def Apple():
         data = {
             'Ticker': 'AAPL',
 	    'Timezone': 'Eastern Time (ET)',
-            'LastUpdate' : currentHour + ' ' + currentDate + ' EST',
+            'LastTimeUpdated' : currentHour + ' ' + currentDate + ' EST',
             'Predicted Close Price of Next Monday' : float(df["Predicted Close Price"].values[-1]),
             'message' : 'success',
             'Github Repo' : 'https://github.com/heyyytamvo/AAPLstockPrediction'

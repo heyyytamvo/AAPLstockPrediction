@@ -82,4 +82,3 @@ class Predictor:
         self.writeResult(result[0][0])
         
         return result[0][0]
-

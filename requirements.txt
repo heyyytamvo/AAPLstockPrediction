@@ -1,5 +1,6 @@
 absl-py==1.4.0
 appdirs==1.4.4
+APScheduler==3.10.4
 array_record==0.5.1
 astunparse==1.6.3
 beautifulsoup4==4.12.3
@@ -89,6 +90,7 @@ tqdm==4.66.2
 types-setuptools==69.5.0.20240415
 typing_extensions==4.11.0
 tzdata==2024.1
+tzlocal==5.2
 urllib3==2.2.1
 webencodings==0.5.1
 Werkzeug==3.0.2
@@ -96,5 +98,3 @@ wrapt==1.14.1
 yarl==1.9.4
 yfinance==0.2.37
 zipp==3.18.1
-APScheduler==3.10.4
-

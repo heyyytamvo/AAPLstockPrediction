@@ -70,10 +70,22 @@ class dataLoader:
             with open(fileName, 'r') as file:
                 lines = file.readlines()
 
-            ### Modify the second column in the last record
+            ### Modify the second column in the last record : Actual Price
             last_record = lines[-1].split(',')
-            last_record[1] = str(self.__stockDataFrame__.tail(1)["Close"].values[0])
 
+            ## CaseHandle: when worker shutdown and re run
+            
+            
+            #print("Last records in History.txt: ", last_record[0])
+            #print("Current Date: ", parameters.currentDate)
+            #print("Actual Price in Last Record: ", last_record[1])
+            #if (last_record[0] == parameters.currentDate) and (last_record[1] == -1):
+            #    return
+
+            last_record[1] = str(self.__stockDataFrame__.tail(1)["Close"].values[0])
+	    
+            
+	    
             ### Construct the modified last record string
             modified_last_record = ','.join(last_record)
 
