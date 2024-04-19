@@ -4,21 +4,21 @@ from flask import Flask, jsonify
 import pandas as pd
 import parameters
 from apscheduler.schedulers.background import BackgroundScheduler
-
+import os
 # Create a Flask app
 app = Flask(__name__)
 def ApplePrediction():
     # Your function code here
     _dataLoader = dataLoader()
     _predictor = Predictor()
-
+    
     x_data = _dataLoader.getScaledCloseData()
     _predictor.predict(x_data)
     
 # Create a scheduler
-scheduler = BackgroundScheduler()
+scheduler = BackgroundScheduler(timezone='est')
 # Add the scheduled job to the scheduler
-scheduler.add_job(ApplePrediction, 'cron', hour=9, minute=30)
+scheduler.add_job(ApplePrediction, 'cron', hour=9, minute=35)
 # Start the scheduler
 scheduler.start()
 
@@ -29,6 +29,8 @@ firstRun = False
 def my_startup_function():
     # Your startup function code here
     # Your function code here
+    if os.path.exists("History.txt"):
+        return
     global firstRun
 
     
@@ -49,13 +51,14 @@ def Apple():
     df = pd.read_csv("History.txt")
     currentDate = parameters.currentDate
     currentWeekDate = parameters.currentWeekDate
+    currentHour = parameters.currentHour
     data = None
     if currentWeekDate != "Saturday" and currentWeekDate != "Sunday":
         # Define the JSON data to return
         data = {
-            'Ticker': 'Apple',
-            'Date' : currentDate,
-            'Weekdate' : currentDate,
+            'Ticker': 'AAPL',
+            'Timezone': 'Eastern Time (ET)',
+            'LastUpdate' : currentHour + ' ' + currentDate + ' EST',
             'Predicted Close Price of Today' : float(df["Predicted Close Price"].values[-1]),
             'message' : 'success',
             'Github Repo' : 'https://github.com/heyyytamvo/AAPLstockPrediction'
@@ -63,9 +66,9 @@ def Apple():
         
     else:
         data = {
-            'Ticker': 'Apple',
-            'Date' : currentDate,
-            'Weekdate' : currentDate,
+            'Ticker': 'AAPL',
+	    'Timezone': 'Eastern Time (ET)',
+            'LastUpdate' : currentHour + ' ' + currentDate + ' EST',
             'Predicted Close Price of Next Monday' : float(df["Predicted Close Price"].values[-1]),
             'message' : 'success',
             'Github Repo' : 'https://github.com/heyyytamvo/AAPLstockPrediction'
@@ -77,9 +80,12 @@ def Apple():
 @app.route('/api/history/apple', methods=['GET'])
 def AppleHistory():
     df = pd.read_csv("History.txt")
-    
+    currentDate = parameters.currentDate
+    currentHour = parameters.currentHour
     result = {
-        'Ticker': 'Apple',
+        'Ticker': 'AAPL',
+        'Timezone': 'Eastern Time (ET)',
+	'LastUpdate' : currentHour + ' ' + currentDate + ' EST',
         'Actual' : list(df["Actual Close Price"].values),
         'Predicted' : list(df["Predicted Close Price"].values),
         'Date': list(df['Date'].values),
