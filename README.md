@@ -29,7 +29,7 @@
 
 <h3 align="center">Open API for Apple Stock Price Prediction </h3>
   <a href="http://heyyytamvo.io.vn/api/apple">
-    <img src="images/Product.png" alt="Logo">
+    <img src="Images/Product.png" alt="Logo">
   </a>
   <!-- <p align="center">
     <br />
