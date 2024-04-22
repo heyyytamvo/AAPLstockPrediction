@@ -10,13 +10,15 @@ import datetime as dt
 
 # Create a Flask app
 app = Flask(__name__)
+predictedResult = None
 def ApplePrediction():
+    global predictedResult
     # Your function code here
     _dataLoader = dataLoader()
     _predictor = Predictor()
     
     x_data = _dataLoader.getScaledCloseData()
-    _predictor.predict(x_data)
+    predictedResult = _predictor.predict(x_data)
 
     eastern = pytz.timezone('US/Eastern')
     currentDateTime = dt.datetime.now(eastern)
@@ -38,6 +40,7 @@ firstRun = False
 def my_startup_function():
     # Your startup function code here
     # Your function code here
+    global predictedResult
     if os.path.exists("History.txt"):
         return
     global firstRun
@@ -49,15 +52,15 @@ def my_startup_function():
         _predictor = Predictor()
 
         x_data = _dataLoader.getScaledCloseData()
-        _predictor.predict(x_data)
+        predictedResult = _predictor.predict(x_data)
         firstRun = True
 my_startup_function()
 
 
 # Define a route for the API endpoint
 @app.route('/api/apple', methods=['GET'])
-def Apple():
-    df = pd.read_csv("History.txt")
+def Apple(result=predictedResult):
+    result = float(result)
     currentDate = parameters.currentDate
     currentWeekDate = parameters.currentWeekDate
     currentHour = parameters.currentHour
@@ -68,7 +71,7 @@ def Apple():
             'Ticker': 'AAPL',
             'Timezone': 'Eastern Time (ET)',
             'LastTimeUpdated' : currentHour + ' ' + currentDate + ' EST',
-            'Predicted Close Price of Today' : float(df["Predicted Close Price"].values[-1]),
+            'Predicted Close Price of Today' : result,
             'message' : 'success',
             'Github Repo' : 'https://github.com/heyyytamvo/AAPLstockPrediction'
         }
@@ -78,7 +81,7 @@ def Apple():
             'Ticker': 'AAPL',
 	    'Timezone': 'Eastern Time (ET)',
             'LastTimeUpdated' : currentHour + ' ' + currentDate + ' EST',
-            'Predicted Close Price of Next Monday' : float(df["Predicted Close Price"].values[-1]),
+            'Predicted Close Price of Next Monday' : result,
             'message' : 'success',
             'Github Repo' : 'https://github.com/heyyytamvo/AAPLstockPrediction'
         }

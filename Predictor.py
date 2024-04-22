@@ -32,14 +32,14 @@ class Predictor:
         day_of_week = parameters.currentWeekDate
         currentDate = parameters.currentDate
         
-        if (day_of_week == "Saturday") or (day_of_week == "Sunday"):
+
+        if ((day_of_week == "Saturday") or (day_of_week == "Sunday")):
             pass
         
-
-
         else:
             fileName = "History.txt"
             currentDate = parameters.currentDate
+            
             ## Open History.txt and write new data
             newRecord = f"{currentDate},{-1},{-1}"
             with open(fileName, 'a') as file:
